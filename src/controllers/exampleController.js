@@ -1,3 +1,0 @@
-/**
- * Updated by Hieucode
- */
