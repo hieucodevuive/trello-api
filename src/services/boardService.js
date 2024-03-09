@@ -15,6 +15,17 @@ const findOneById = async(id) => {
   }
 }
 
+const getDetailsById = async(id) => {
+  try {
+    const result = await GET_DB().collection(boardModel.BOARD_COLLECTION_NAME).findOne({
+      _id: new ObjectId(id)
+    })
+    return result
+  } catch (error) {
+    throw error
+  }
+}
+
 const validateBeforeCreate = async(data) => {
   return await boardModel.BOARD_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
 }
@@ -38,6 +49,11 @@ const createNew = async( reqBody ) => {
   }
 }
 
+const getDetails = async(boardId) => {
+  return await getDetailsById(boardId)
+}
+
 export const boardService = {
-  createNew
+  createNew,
+  getDetails
 }
