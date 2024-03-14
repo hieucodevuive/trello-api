@@ -88,7 +88,35 @@ const getDetails = async(boardId) => {
   }
 }
 
+const update = async(boardId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+
+    Object.keys(updateData).forEach(fieldName => {
+      if (boardModel.INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData[fieldName]
+      }
+    })
+
+    const updatedBoard = await GET_DB().collection(boardModel.BOARD_COLLECTION_NAME).findOneAndUpdate(
+      {
+        _id: new ObjectId(boardId)
+      },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
+    return updatedBoard
+  } catch (error) {
+    throw error
+  }
+}
+
+
 export const boardService = {
   createNew,
-  getDetails
+  getDetails,
+  update
 }

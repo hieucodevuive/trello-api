@@ -28,7 +28,7 @@ const pushColumnOrderIds = async(column) => {
       { $push: { columnOrderIds: new ObjectId(column._id) } },
       { returnDocument: 'after' }
     )
-    return result.value || null
+    return result
   } catch (error) {
     throw error
   }
