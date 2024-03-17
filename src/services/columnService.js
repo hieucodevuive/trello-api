@@ -58,6 +58,33 @@ const createNew = async( reqBody ) => {
   }
 }
 
+const update = async(columnId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+
+    Object.keys(updateData).forEach(fieldName => {
+      if (columnModel.INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData[fieldName]
+      }
+    })
+
+    const updatedColumn = await GET_DB().collection(columnModel.COLUMN_COLLECTION_NAME).findOneAndUpdate(
+      {
+        _id: new ObjectId(columnId)
+      },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
+    return updatedColumn
+  } catch (error) {
+    throw error
+  }
+}
+
 export const columnService = {
-  createNew
+  createNew,
+  update
 }

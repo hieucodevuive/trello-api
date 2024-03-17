@@ -17,7 +17,10 @@ const COLUMN_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false)
 })
 
+const INVALID_UPDATE_FIELDS = ['_id', 'boardId', 'createdAt']
+
 export const columnModel = {
   COLUMN_COLLECTION_NAME,
-  COLUMN_COLLECTION_SCHEMA
+  COLUMN_COLLECTION_SCHEMA,
+  INVALID_UPDATE_FIELDS
 }
