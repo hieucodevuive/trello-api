@@ -2,10 +2,22 @@ import { ObjectId } from 'mongodb'
 import { GET_DB } from '~/config/mongodb'
 import { columnModel } from '~/models/columnModel'
 import { boardModel } from '~/models/boardModel'
+import { cardModel } from '~/models/cardModel'
 
 const findOneById = async(id) => {
   try {
     const result = await GET_DB().collection(columnModel.COLUMN_COLLECTION_NAME).findOne({
+      _id: new ObjectId(id)
+    })
+    return result
+  } catch (error) {
+    throw error
+  }
+}
+
+const deleteOneById = async(id) => {
+  try {
+    const result = await GET_DB().collection(columnModel.COLUMN_COLLECTION_NAME).deleteOne({
       _id: new ObjectId(id)
     })
     return result
@@ -84,7 +96,22 @@ const update = async(columnId, reqBody) => {
   }
 }
 
+const deleteItem = async(columnId) => {
+  try {
+    //Xoa column
+    await deleteOneById(columnId)
+    //Xoa toan bo card thuoc colummn tren
+    await GET_DB().collection(cardModel.CARD_COLLECTION_NAME).deleteMany({
+      columnId: new ObjectId(columnId)
+    })
+    return { deleteResult: 'Column deleted successfully' }
+  } catch (error) {
+    throw error
+  }
+}
+
 export const columnService = {
   createNew,
-  update
+  update,
+  deleteItem
 }
