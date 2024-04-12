@@ -104,6 +104,7 @@ const deleteItem = async(columnId) => {
     await GET_DB().collection(cardModel.CARD_COLLECTION_NAME).deleteMany({
       columnId: new ObjectId(columnId)
     })
+    //Xoa column ID trong mang columnIds cuar board
     return { deleteResult: 'Column deleted successfully' }
   } catch (error) {
     throw error
